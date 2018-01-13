@@ -1,0 +1,15 @@
+[Unit]
+Description=Solr
+After=docker.service
+Requires=docker.service
+
+[Service]
+
+EnvironmentFile=/etc/sysconfig/netvars
+TimeoutStartSec=300
+Restart=on-failure
+ExecStartPre=-/usr/bin/docker stop ${CONTAINER_NAME}
+ExecStartPre=-/usr/bin/docker rm -f ${CONTAINER_NAME}
+ExecStartPre=/usr/bin/docker pull ${IMAGE}
+ExecStart=/bin/bash -c "/usr/bin/docker-compose up
+ExecStop=/usr/bin/docker stop ${CONTAINER_NAME}

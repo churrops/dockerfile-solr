@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+  solrcloud:
+    image: solr72:7.2.0
+    volumes:
+      - /mnt/data/solr:/var/solr 
+      - /mnt/data/logs:/var/log/solr 
+    environment:
+      CONTAINER_NAME: solr
+      NETWORK_NAME: default
+      SOLR_PORT1: 8983
+      SOLR_MODE: solrcloud
+      SOLR_ZK_CLIENT_TIMEOUT: 15000
+      SOLR_HEAP: 8g
+      GC_TUNE: "-XX:+UseG1GC\ -XX:+PerfDisableSharedMem\ -XX:+ParallelRefProcEnabled\ -XX:G1HeapRegionSize=8m\ -XX:MaxGCPauseMillis=250\ -XX:InitiatingHeapOccupancyPercent=75\ -XX:+UseLargePages\ -XX:+AggressiveOpts"
+    ports:
+      - "$SOLR_PORT1:$SOLR_PORT1"
+    networks:
+      - default
